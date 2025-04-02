@@ -41,7 +41,7 @@ void metoda_kwadratur2d(double (*funkcja)(double, double), const wezly& gauss) {
 }
 vector<vector<double>> add(const vector<vector<double>>& A, const vector<vector<double>>& B) {
     if (A.size() != B.size() || A[0].size() != B[0].size()) {
-        throw invalid_argument("Macierze musz¹ mieæ te same wymiary.");
+        throw invalid_argument("Macierze muszÂ¹ mieÃ¦ te same wymiary.");
     }
 
     vector<vector<double>> result(A.size(), vector<double>(A[0].size(), 0));
@@ -67,7 +67,7 @@ vector<vector<double>> multiplyByScalar(const vector<vector<double>>& matrix, do
 }
 vector<vector<double>> divideByScalar(const vector<vector<double>>& matrix, double scalar) {
     if (scalar == 0) {
-        throw invalid_argument("Nie mo¿na dzieliæ przez zero.");
+        throw invalid_argument("Nie moÂ¿na dzieliÃ¦ przez zero.");
     }
 
     vector<vector<double>> result(matrix.size(), vector<double>(matrix[0].size(), 0));
@@ -82,7 +82,7 @@ vector<vector<double>> divideByScalar(const vector<vector<double>>& matrix, doub
 }
 vector<double> multiplyMatrixByVector(const vector<vector<double>>& A, const vector<double>& v) {
     if (A[0].size() != v.size()) {
-        throw invalid_argument("Liczba kolumn w macierzy musi byæ równa liczbie elementów w wektorze.");
+        throw invalid_argument("Liczba kolumn w macierzy musi byÃ¦ rÃ³wna liczbie elementÃ³w w wektorze.");
     }
 
     size_t m = A.size();  
@@ -100,7 +100,7 @@ vector<double> multiplyMatrixByVector(const vector<vector<double>>& A, const vec
 }
 vector<vector<double>> addVectorToMatrix(const vector<vector<double>>& A, const vector<double>& v) {
     if (A[0].size() != v.size()) {
-        throw invalid_argument("Liczba kolumn w macierzy musi byæ równa liczbie elementów w wektorze.");
+        throw invalid_argument("Liczba kolumn w macierzy musi byÃ¦ rÃ³wna liczbie elementÃ³w w wektorze.");
     }
 
     vector<vector<double>> result = A;  
@@ -115,7 +115,7 @@ vector<vector<double>> addVectorToMatrix(const vector<vector<double>>& A, const 
 }
 vector<double> addMatrixToVector(const vector<vector<double>>& matrix, const vector<double>& vec) {
     if (matrix[0].size() != vec.size()) {
-        throw std::invalid_argument("Wektor musi mieæ tyle samo elementów co liczba kolumn macierzy.");
+        throw std::invalid_argument("Wektor musi mieÃ¦ tyle samo elementÃ³w co liczba kolumn macierzy.");
     }
 
     vector<double> result(vec.size(), 0.0);
@@ -131,7 +131,7 @@ vector<double> addMatrixToVector(const vector<vector<double>>& matrix, const vec
 }
 vector<double> addVectors(const vector<double>& vec1, const vector<double>& vec2) {
     if (vec1.size() != vec2.size()) {
-        throw std::invalid_argument("Wektory musz¹ mieæ tê sam¹ d³ugoœæ.");
+        throw std::invalid_argument("Wektory muszÂ¹ mieÃ¦ tÃª samÂ¹ dÂ³ugoÅ“Ã¦.");
     }
 
     vector<double> result(vec1.size(), 0.0);
@@ -293,17 +293,14 @@ public:
 };
 int main() {
     GlobalData data = GloadData();
-    //displayData(data);
 
     vector<node> nodes = NloadData(data.nN);
     vector<element> elements = EloadData(data.nE);
     for (int i = 0; i < data.nN; i++) {
-        nodes[i].Temp = data.InitialTemp;
-       // cout<<i+1<<" " << nodes[i].BC << endl;
-       // cout<<i+1<<" " << nodes[i].Temp << endl;
+        nodes[i].Temp = data.InitialTemp
     }
     grid newGrid(data.nN, data.nE, elements, nodes);
-  //  displayGrid(newGrid);
+  
 
     wezly gauss0 = wezly(0);
     wezly gauss1 = wezly(1);
@@ -311,21 +308,6 @@ int main() {
     wezly gauss3 = wezly(3);
     wezly gauss4 = wezly(4);
 
-    /* metoda_kwadratur1d(funkcja_kwadratowa, gauss0);
-     metoda_kwadratur1d(funkcja_kwadratowa, gauss1);
-     metoda_kwadratur1d(funkcja_kwadratowa, gauss2);
-     metoda_kwadratur1d(funkcja_kwadratowa, gauss3);
-     metoda_kwadratur1d(funkcja_kwadratowa, gauss4);
-     cout << "Wynik dokladny: " << 15.3333 << endl;
-     cout << endl;
-
-     metoda_kwadratur2d(funkcja_kwadratowa2, gauss0);
-     metoda_kwadratur2d(funkcja_kwadratowa2, gauss1);
-     metoda_kwadratur2d(funkcja_kwadratowa2, gauss2);
-     metoda_kwadratur2d(funkcja_kwadratowa2, gauss3);
-     metoda_kwadratur2d(funkcja_kwadratowa2, gauss4);
-     cout << "Wynik dokladny: " << 26.2222 << endl;
-     */
     wezly gauss = wezly(0);
 
     switch (data.Npc) {
@@ -346,43 +328,23 @@ int main() {
 
 
     ElemUniv elem(data.Npc, gauss);
-    //elem.print();
     int iteracje = data.SimulationTime / data.SimulationStepTime;
     for (int j = 0; j < iteracje; j++) {
         for (int i = 0; i < elements.size(); i++) {
-            //cout << "Element: " << i+1 << endl;
             Jakobian jacobian(elem, newGrid, i, data.Npc);
             newGrid.elements[i].jacobian = jacobian;
             MacierzH* macierzH = new MacierzH(elem, jacobian, data.Npc, gauss, data, newGrid, i);
             newGrid.elements[i].macierzH = macierzH;
-          //  cout << "MacierzC dla elementu: " << i << endl;
-           // macierzH->print_macierzC();
-            //macierzH->print_macierzH();
+       
         }
-        /* int element_number = 0;
-         Jakobian jacobian(elem, newGrid, element_number, 0, data.Npc);
-         jacobian.print();
-         newGrid.elements[element_number].jacobian = jacobian;
-
-         MacierzH macierz(elem, jacobian, data.Npc, gauss, data);
-         macierz.print_dN_dx();
-         macierz.print_dN_dy();*/
+  
         H_global globalH(newGrid, data.nE, data.nN);
-
-       // cout << "\n\nMacierzH globalna\n\n" << endl;
-        //globalH.print_MacierzH();
-
-        //cout << "\n\nMacierzC globalna\n\n" << endl;
-       // globalH.print_MacierzC();
-
         P_global globalP(newGrid, data.nE, data.nN);
-        //globalP.print();
-
+       
         global_system_equation system(globalH.macierz, globalH.macierzC, globalP.vectorP, data, newGrid);
         
 
         vector<double> t1= system.oblicz_uklad();
-       // system.printResult();
 
         for (int i = 0; i < data.nN; i++) {
             newGrid.nodes[i].Temp = t1[i];
@@ -400,14 +362,6 @@ int main() {
         }
         cout << fixed << setprecision(10) << min << "  " << max << endl;
 
-       /* ofstream outFile("output.txt", ios::app);
-        if (outFile.is_open()) {
-            outFile << fixed << setprecision(10) << min << "     " << max << endl;
-            outFile.close();
-        }
-        else {
-            cerr << "Nie mo¿na otworzyæ pliku do zapisu." << endl;
-        }*/
     }
 
     return 0;
